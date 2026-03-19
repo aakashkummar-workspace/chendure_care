@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f0f5f3;
+  --foreground: #1a2e35;
+  --teal-primary: #2a7d6e;
+  --teal-dark: #1d5c51;
+  --teal-light: #e8f5f0;
+  --teal-accent: #3a9d8f;
+  --cream: #f7f9f8;
+  --gold: #c4a962;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5d5d0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9bb5ad;
+}
+
+/* Donut chart animation */
+@keyframes donutFill {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Bar chart animation */
+@keyframes growUp {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.animate-grow {
+  animation: growUp 0.8s ease-out forwards;
+  transform-origin: bottom;
+}

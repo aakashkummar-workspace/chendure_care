@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Doctor {
+  id        String    @id @default(uuid())
+  name      String
+  patients  Patient[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Patient {
+  id            String          @id @default(uuid())
+  name          String
+  phone         String          @unique
+  diseaseType   String
+  doctorId      String
+  doctor        Doctor          @relation(fields: [doctorId], references: [id])
+  flowId        String?
+  diseaseFlow   DiseaseFlow?    @relation(fields: [flowId], references: [id])
+  status        String          @default("ACTIVE") // ACTIVE, INACTIVE, COMPLETED
+  currentDay    Int             @default(0)
+  lastFollowUp  DateTime?
+  logs          FollowUpLog[]
+  alerts        Alert[]
+  conversations Conversation[]
+  documents     Document[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model DiseaseFlow {
+  id        String     @id @default(uuid())
+  name      String     @unique // e.g., "Diabetes"
+  steps     FlowStep[]
+  patients  Patient[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model FlowStep {
+  id              String      @id @default(uuid())
+  flowId          String
+  diseaseFlow     DiseaseFlow @relation(fields: [flowId], references: [id])
+  dayNumber       Int
+  messageTemplate String
+  actionType      String      @default("MESSAGE") // MESSAGE, QUESTION, UPLOAD
+  expectedResponse String?    // JSON or string for validation
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@unique([flowId, dayNumber])
+}
+
+model FollowUpLog {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  stepId          String?
+  dayNumber       Int
+  messageSent     String
+  responseReceived String?
+  status          String   @default("SENT") // SENT, RESPONDED, NO_RESPONSE, FAILED
+  createdAt       DateTime @default(now())
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  type      String   @default("HIGH") // HIGH, MEDIUM, LOW
+  reason    String
+  status    String   @default("OPEN") // OPEN, RESOLVED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  message   String
+  role      String   // PATIENT, SYSTEM, DOCTOR
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  name      String
+  url       String   // S3 or local path
+  type      String   // REPORT, PRESCRIPTION
+  createdAt DateTime @default(now())
+}
