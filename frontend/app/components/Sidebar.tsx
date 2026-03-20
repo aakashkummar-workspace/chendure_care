@@ -11,8 +11,8 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Patients', icon: Users, href: '/patients' },
-    { name: 'Schedule', icon: CalendarDays, href: '/dashboard' },
-    { name: 'Messages', icon: MessageCircle, href: '/dashboard' },
+    { name: 'Schedule', icon: CalendarDays, href: '/schedule' },
+    { name: 'Messages', icon: MessageCircle, href: '/messages' },
     { name: 'Alerts', icon: Bell, href: '/alerts' },
     { name: 'Settings', icon: Settings, href: '/settings' },
   ];
