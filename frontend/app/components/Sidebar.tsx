@@ -18,7 +18,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-[280px] h-screen bg-gradient-to-b from-teal-600 to-teal-700 flex flex-col text-white relative overflow-hidden">
+    <div className="w-[280px] h-screen bg-gradient-to-b from-teal-600 to-teal-700 dark:from-gray-900 dark:to-gray-950 flex flex-col text-white relative overflow-hidden transition-colors duration-300">
       {/* Decorative background shapes */}
       <div className="absolute top-0 right-0 w-40 h-40 bg-teal-500/20 rounded-full -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-20 left-0 w-32 h-32 bg-teal-500/10 rounded-full -translate-x-1/2" />
