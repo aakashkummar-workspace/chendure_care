@@ -38,6 +38,23 @@ app.post('/followup/run', async (req, res) => {
   res.json({ message: 'Automation triggered manually' });
 });
 
-app.listen(PORT, () => {
-  console.log(`[Server] Chendure CARE+ Backend running on port ${PORT}`);
+// GET endpoint for Vercel Cron
+app.get('/api/cron/followup', async (req, res) => {
+  // Check for secret to prevent unauthorized calls (recommended)
+  // const authHeader = req.headers.get('authorization');
+  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  //   return res.status(401).end('Unauthorized');
+  // }
+  
+  console.log('[Cron] Running daily follow-up automation via Vercel Cron...');
+  await automationEngine.runDailyFollowUps();
+  res.json({ message: 'Cron automation completed' });
 });
+
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[Server] Chendure CARE+ Backend running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
